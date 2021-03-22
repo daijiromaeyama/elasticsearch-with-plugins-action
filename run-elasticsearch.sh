@@ -26,12 +26,13 @@ do
     --rm \
     --env "node.name=es${node}" \
     --env "cluster.name=docker-elasticsearch" \
+    --env "cluster.initial_master_nodes=es1" \
+    --env "discovery.seed_hosts=es1" \
     --env "cluster.routing.allocation.disk.threshold_enabled=false" \
     --env "bootstrap.memory_lock=true" \
     --env "ES_JAVA_OPTS=-Xms1g -Xmx1g" \
     --env "xpack.security.enabled=false" \
     --env "xpack.license.self_generated.type=basic" \
-    --env "discovery.zen.minimum_master_nodes=${NODES}" \
     --env "http.port=${port}" \
     --ulimit nofile=65536:65536 \
     --ulimit memlock=-1:-1 \
