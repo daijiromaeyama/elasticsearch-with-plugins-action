@@ -8,9 +8,9 @@ if [[ -z $STACK_VERSION ]]; then
 fi
 
 PLUGIN_INSTALL_CMD=''
-PLUGIN_STR=`echo ${PLUGINS} | sed -e 's/\n/ /g'`
-if [ -n "${PLUGIN_STR}" ]; then
-  ARRAY=(${PLUGIN_STR})
+PLUGINS_STR=`echo ${PLUGINS} | sed -e 's/\n/ /g'`
+if [ -n "${PLUGINS_STR}" ]; then
+  ARRAY=(${PLUGINS_STR})
   for i in "${ARRAY[@]}"
   do
     PLUGIN_INSTALL_CMD+="elasticsearch-plugin install --batch ${i} && "
@@ -33,13 +33,13 @@ do
     --env "ES_JAVA_OPTS=-Xms1g -Xmx1g" \
     --env "xpack.security.enabled=false" \
     --env "xpack.license.self_generated.type=basic" \
-    --env "http.port=${port}" \
     --ulimit nofile=65536:65536 \
     --ulimit memlock=-1:-1 \
-    --publish "${port}:${port}" \
+    --publish "${port}:9200" \
     --detach \
     --network=elastic \
     --name="es${node}" \
+    --entrypoint="" \
     docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION} \
     /bin/sh -vc "${PLUGIN_INSTALL_CMD} /usr/local/bin/docker-entrypoint.sh"
 done
